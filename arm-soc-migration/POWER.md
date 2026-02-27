@@ -169,16 +169,6 @@ Ask Kiro to test the server:
 "Search the Arm knowledge base for BCM2711 architecture information"
 ```
 
-**Troubleshooting Docker Issues:**
-
-If the MCP server fails to connect:
-
-1. **Check Docker is running:** `docker ps`
-2. **Check Docker permissions (Linux):** `sudo usermod -aG docker $USER`
-3. **Manually test the container:** `docker run --rm -i armlimited/arm-mcp:latest`
-4. **Check logs in Kiro:** Open MCP Servers panel → click "arm-mcp-server" → view logs
-5. **Enable debug logging:** Change `"FASTMCP_LOG_LEVEL": "ERROR"` to `"DEBUG"` in `mcp.json`
-
 **Step 5: Verify Cross-Compilation Tools (Optional)**
 ```bash
 aarch64-linux-gnu-gcc --version
@@ -201,22 +191,14 @@ brew install arm-none-eabi-gcc
 
 ### Initial Setup
 
-**Step 1: Verify MCP Server Connection**
-
-After installing this power, verify the Arm MCP Server is working:
-
-1. Open Kiro's MCP Server panel (View → MCP Servers)
-2. Look for "arm-mcp-server" with green status
-3. If red/disconnected, click "Reconnect" or restart Kiro
-
-**Step 2: Specify Migration Context**
+**Step 1: Specify Migration Context**
 
 Tell Kiro your source and target SoCs:
 ```
 "I need to migrate from BCM2711 (Raspberry Pi 4) to BCM2712 (Raspberry Pi 5)"
 ```
 
-**Step 3: Project Structure**
+**Step 2: Project Structure**
 
 Ensure your project follows recommended structure:
 ```
@@ -305,11 +287,13 @@ This power enforces strict safety constraints defined in `constraints.md`:
 
 **Solutions:**
 1. Verify Docker is running: `docker ps`
-2. Test container directly: `docker run --rm armlimited/arm-mcp:latest --version`
-3. Check Kiro MCP Server panel status
-4. Force pull latest image: `docker pull armlimited/arm-mcp:latest`
-5. Restart Kiro
-6. Check logs in MCP Server panel for specific errors
+2. Check Docker permissions (Linux): `sudo usermod -aG docker $USER`
+3. Test container directly: `docker run --rm -i armlimited/arm-mcp:latest`
+4. Check Kiro MCP Server panel status
+5. Force pull latest image: `docker pull armlimited/arm-mcp:latest`
+6. Check logs in Kiro: Open MCP Servers panel → click "arm-mcp-server" → view logs
+7. Enable debug logging: Change `"FASTMCP_LOG_LEVEL": "ERROR"` to `"DEBUG"` in `mcp.json`
+8. Restart Kiro
 
 ### Cross-Compilation Errors
 
