@@ -24,6 +24,51 @@ This steering file provides guidance for setting up effective CloudWatch alarms 
 
 ## Getting Recommended Alarm Configurations
 
+### Account-Level Alarm Recommendations
+
+The power integrates with the Alarm Recommendations service to provide pre-computed, account-wide alarm recommendations based on your account's resources and AWS best practices.
+
+**Full Workflow: onboard → generate → get → apply**
+
+1. **Onboard** (`onboard_alarm_recommendations_for_account`): Register the account with the service. This is a one-time prerequisite.
+2. **Generate** (`generate_alarm_recommendations_for_account`): Trigger fresh recommendation generation. This is asynchronous — the response returns immediately with an IN_PROGRESS status.
+3. **Get** (`get_alarm_recommendations_for_account`): Retrieve the generated recommendations. If `generation_status` is IN_PROGRESS, wait and retry.
+4. **Summarize** (`summarize_alarm_recommendations`): Get a quick overview grouped by namespace and metric category instead of the full list.
+5. **Apply** (`apply_alarm_recommendation_for_account`): Accept (creates the alarm) or dismiss each recommendation.
+
+**Tool: `onboard_alarm_recommendations_for_account`**
+
+Registers the AWS account with the Alarm Recommendations service. Must be called once before generating or retrieving recommendations.
+
+**Tool: `generate_alarm_recommendations_for_account`**
+
+Triggers the service to compute fresh recommendations. This is fire-and-forget — poll `get_alarm_recommendations_for_account` until `generation_status` is COMPLETED.
+
+**Tool: `get_alarm_recommendations_for_account`**
+
+Retrieves existing alarm recommendations for the entire account. Unlike `get_recommended_metric_alarms` (which computes recommendations locally for individual metrics), this tool returns pre-computed recommendations from the Alarm Recommendations service.
+
+**Tool: `apply_alarm_recommendation_for_account`**
+
+Accepts or dismisses a specific recommendation. Pass `state="ACCEPTED"` to create the alarm, or `state="DISMISSED"` to mark it as not needed. The `EDITED` state is not supported.
+
+**When to use these tools:**
+- You want a broad view of recommended alarms across all resources in the account
+- You want pre-computed recommendations without specifying individual metrics
+- You want account-level best-practice alarm suggestions
+
+**When to use `get_recommended_metric_alarms` instead:**
+- You want recommendations for a specific metric and resource
+- You want to customize the statistic, dimensions, or namespace
+- You don't need account-wide recommendations
+
+**Typical workflow:**
+1. Call `onboard_alarm_recommendations_for_account` (first time only)
+2. Call `generate_alarm_recommendations_for_account` to trigger fresh generation
+3. Call `get_alarm_recommendations_for_account` to retrieve recommendations (retry if IN_PROGRESS)
+4. Optionally call `summarize_alarm_recommendations` for a quick overview
+5. Call `apply_alarm_recommendation_for_account` for each recommendation to accept or dismiss
+
 ### Using get_recommended_metric_alarms
 
 The power includes intelligent alarm recommendations based on AWS best practices:
