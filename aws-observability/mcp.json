@@ -1,11 +1,13 @@
 {
   "mcpServers": {
     "awslabs.cloudwatch-mcp-server": {
-      "command": "uvx",
+      "command": "bash",
       "args": [
-        "awslabs.cloudwatch-mcp-server@latest"
+        "-c",
+        "uv run --directory \"${CLOUDWATCH_MCP_SERVER_DIR}\" awslabs.cloudwatch-mcp-server"
       ],
       "env": {
+        "CLOUDWATCH_MCP_SERVER_DIR": "/path/to/cloudwatch-mcp-server/src/cloudwatch-mcp-server",
         "AWS_PROFILE": "default",
         "AWS_REGION": "us-east-1",
         "FASTMCP_LOG_LEVEL": "ERROR"

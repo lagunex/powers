@@ -92,6 +92,7 @@ The comprehensive AWS observability platform combining monitoring, troubleshooti
 - Metrics Insights for advanced filtering and grouping
 - Analyze metric trends, seasonality, and anomalies
 - Get recommended alarm configurations based on AWS best practices
+- Account-level alarm recommendations from the Alarm Recommendations service
 - View active alarms and alarm history
 - Support for custom metrics and composite alarms
 
@@ -99,6 +100,8 @@ The comprehensive AWS observability platform combining monitoring, troubleshooti
 - Monitoring EC2, Lambda, RDS, and other AWS service metrics
 - Setting up performance baselines and thresholds
 - Creating intelligent alarms with recommended configurations
+- Retrieving pre-computed alarm recommendations for an account
+- Onboarding accounts to the alarm recommendations service
 - Investigating active alarms and reviewing alarm history
 - Analyzing metric trends and detecting anomalies
 - Troubleshooting performance degradation
